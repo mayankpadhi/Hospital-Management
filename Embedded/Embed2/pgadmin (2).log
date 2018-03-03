@@ -1,0 +1,14 @@
+ERROR  : 12:05:01 AM: Error: Error connecting to the server: definition of service "postgres" not found
+
+ERROR  : 12:05:14 AM: Error: Error connecting to the server: FATAL:  password authentication failed for user "postgres"
+FATAL:  password authentication failed for user "postgres"
+
+ERROR  : 12:09:52 AM: Error: Error connecting to the server: definition of service "postgres" not found
+
+ERROR  : 12:31:40 AM: ERROR:  schema "hospmanage" does not exist
+ERROR  : 12:37:23 AM: Error: ERROR:  cannot drop table hospmanage.appointment because other objects depend on it
+DETAIL:  constraint appointment_with_appointment_no_fkey on table hospmanage.appointment_with depends on table hospmanage.appointment
+HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+ERROR  : 12:42:41 AM: ERROR:  duplicate key value violates unique constraint "employee_pkey"
+DETAIL:  Key (eid)=(4401) already exists.
+ERROR  : 12:44:43 AM: ERROR:  schema "hospmanage" does not exist

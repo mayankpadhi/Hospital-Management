@@ -1,0 +1,100 @@
+#include<stdio.h>
+#include<string.h>
+
+EXEC SQL BEGIN DECLARE SECTION;
+char query[100], name[30], buf[20];
+
+const char *target = "hospmng@localhost:5432";
+const char *user = "hospmanage";
+const char *passwd = "qwert";
+int pid;
+char M_Name[30], qry_upd[30], rate[10];
+
+EXEC SQL END DECLARE SECTION;
+
+
+void update_medcost(){
+	printf("Enter The medicine name and the rate: ");
+	scanf("%s", M_Name);
+	
+	printf("Enter the rate: ");
+	scanf("%s", rate);
+
+	printf("%s \n %s", M_Name, rate);
+	/*
+	strcpy(qry_upd, "Update available_medicines SET rate = ");
+	strcat(qry_upd, rate);
+	strcat(qry_upd, "where M_Name= ");
+	strcat(qry_upd, M_Name);
+	*/
+	
+	EXEC SQL WHENEVER NOT FOUND CONTINUE;
+	//EXEC SQL EXECUTE STMT;
+	EXEC SQL Update available_medicine SET M_rate = :rate where M_Name= :M_Name;
+	EXEC SQL COMMIT;
+}
+
+void update_testcost(){
+	printf("Enter The test name: ");
+	scanf("%s", M_Name);
+	
+	printf("Enter the rate: ");
+	scanf("%s", rate);
+
+	/*
+	strcpy(qry_upd, "Update available_medicines SET rate = ");
+	strcat(qry_upd, rate);
+	strcat(qry_upd, "where M_Name= ");
+	strcat(qry_upd, M_Name);
+	*/
+	
+	EXEC SQL WHENEVER NOT FOUND CONTINUE;
+	//EXEC SQL EXECUTE STMT;
+	EXEC SQL Update available_test SET T_rate = :rate where T_Name= :M_Name;
+	
+	EXEC SQL COMMIT;
+}
+
+int main(void) {
+
+	EXEC SQL CONNECT TO :target USER :user USING :passwd;
+
+	ECPGdebug(1, stderr);
+
+	int ch;
+	//EXEC SQL CONNECT TO : dbname
+
+	EXEC SQL SET SEARCH_PATH TO hospmanage;
+	
+	printf("Enter your to update:\n1. Medicine Rate\n2. Test Rate");
+	scanf("%d", &ch);
+	
+	switch(ch){
+	case 1: update_medcost();
+		break;
+	
+	case 2: update_testcost();
+		break;
+
+	default:
+		printf("exit");
+		//exit(0);
+	}
+	
+//	strcpy(query, "select pid, did, remarks from reports where pid= 3008");	
+	//EXEC SQL :query;
+//	EXEC SQL PREPARE query_prep FROM :query;
+//	EXEC SQL DECLARE reports CURSOR FOR query_prep;
+	//EXEC SQL OPEN reports;
+	EXEC SQL WHENEVER NOT FOUND DO BREAK;
+	
+//	while(1){
+//	EXEC SQL FETCH reports INTO :pid, :did, :remarks;	
+//	printf("%d\t %d\t %s\n", pid, did, remarks);
+	
+//	}
+
+	EXEC SQL DISCONNECT;
+
+	return 0;
+}

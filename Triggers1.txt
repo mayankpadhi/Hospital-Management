@@ -1,0 +1,14 @@
+CREATE OR REPLACE FUNCTION trigger1()
+  RETURNS trigger AS
+$BODY$
+BEGIN
+ IF age< 0 THEN
+ INSERT INTO patient(patient_Type, P_Name, Ward_no, Gender, Admit_From, Admit_To, PID, age)
+ VALUES(patient_Type, P_Name, Ward_no, Gender, Admit_From, Admit_To, PID, 0);
+ END IF;
+ 
+ RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql VOLATILE
+COST 100;

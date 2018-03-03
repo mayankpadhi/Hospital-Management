@@ -1,0 +1,39 @@
+#include<stdio.h>
+#include<string.h>
+
+EXEC SQL BEGIN DECLARE SECTION;
+char query[100], name[30], buf[20];
+
+const char *target = "hospmng@localhost:5432";
+const char *user = "hospmanage";
+const char *passwd = "qwert";
+int pid, did;
+char remarks[30] ;
+
+EXEC SQL END DECLARE SECTION;
+
+int main(void) {
+
+	EXEC SQL CONNECT TO :target USER :user USING :passwd;
+
+	//ECPGdebug(1, stderr);
+
+	//EXEC SQL CONNECT TO : dbname
+
+	EXEC SQL SET SEARCH_PATH TO hospmanage;
+	strcpy(query, "select pid, did, remarks from reports where pid= 3008");	
+	//EXEC SQL :query;
+	EXEC SQL PREPARE query_prep FROM :query;
+	EXEC SQL DECLARE reports CURSOR FOR query_prep;
+	EXEC SQL OPEN reports;
+	//printf("patient: %d\n", c);
+
+	while(sqlca.sqlcode== 0){
+	EXEC SQL FETCH reports INTO :pid, :did, :remarks;	
+	printf("%d\t %d\t %s\n", pid, did, remarks);
+	}
+
+	EXEC SQL DISCONNECT;
+
+	return 0;
+}
