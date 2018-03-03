@@ -1,4 +1,4 @@
-# Hospital-Management
+# Hospital Management System
 Hospital management database system was made that would keep a record of the patients, doctors and staff. Apart from that it keeps the data of the in/out patients alongwith their medical history.
 * It keeps the records of the number of vacant wards/beds, medicines, tests, and operations.
 * Keeps records of out-patients, their appointments with doctors, lab tests etc.
